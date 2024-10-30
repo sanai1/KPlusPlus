@@ -39,6 +39,12 @@ public:
                 tokens.emplace_back(getDivision());
             } else if (current_ == '%') {
                 tokens.emplace_back(getPercent());
+            } else if (current_ == '>') {
+                tokens.emplace_back(getMore());
+            } else if (current_ == '<') {
+                tokens.emplace_back(getLess());
+            } else if (current_ == '!') {
+                tokens.emplace_back(getExclamationMark());
             } else if (current_ == '=') {
                 tokens.emplace_back(getAssign());
             } else if (current_ == '(') {
@@ -68,11 +74,16 @@ public:
             } else if (current_ == ',') {
                 tokens.emplace_back(TokenTypeEnum::COMMA, ",", numberString_);
                 advance();
-            } else if (current_ == '\n') {
+            }
+//            else if (current_ == '.') {
+//              tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
+//              advance(); }
+            else if (current_ == '\n') {
                 numberString_ ++;
                 advance();
             } else {
-                tokens.emplace_back(TokenTypeEnum::OTHER, to_string(current_), numberString_);
+                string str(1, current_);
+                tokens.emplace_back(TokenTypeEnum::OTHER, str, numberString_);
                 advance();
             }
         }
@@ -205,6 +216,42 @@ private:
             return {TokenTypeEnum::ASSIGNASSIGN, result, numberString_};
         }
         return {TokenTypeEnum::ASSIGN, result, numberString_};
+    }
+
+    TokenImplementation getMore() {
+        string result;
+        result += current_;
+        advance();
+        if (current_ == '=') {
+            result += current_;
+            advance();
+            return {TokenTypeEnum::MOREASSIGN, result, numberString_};
+        }
+        return {TokenTypeEnum::MORE, result, numberString_};
+    }
+
+    TokenImplementation getLess() {
+        string result;
+        result += current_;
+        advance();
+        if (current_ == '=') {
+            result += current_;
+            advance();
+            return {TokenTypeEnum::LESSASSIGN, result, numberString_};
+        }
+        return {TokenTypeEnum::LESS, result, numberString_};
+    }
+
+    TokenImplementation getExclamationMark() {
+        string result;
+        result += current_;
+        advance();
+        if (current_ == '=') {
+            result += current_;
+            advance();
+            return {TokenTypeEnum::EXCLAMATIONMARKASSIGN, result, numberString_};
+        }
+        return {TokenTypeEnum::EXCLAMATIONMARK, result, numberString_};
     }
 
     string getNumber() {

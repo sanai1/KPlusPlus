@@ -26,6 +26,14 @@ enum class TokenTypeEnum {
     ASSIGNASSIGN,
     PERCENTASSIGN,
 
+    // сравнения
+    MORE,
+    MOREASSIGN,
+    LESS,
+    LESSASSIGN,
+    EXCLAMATIONMARK,
+    EXCLAMATIONMARKASSIGN,
+
     // скобки
     LPAREN, // круглые
     RPAREN,
@@ -40,6 +48,7 @@ enum class TokenTypeEnum {
     SEMICOLON, // точка с запятой
     COLON, // двоеточие
     COMMA, // запятая
+//    POINT, // точка
 
     // литералы
     NUMBER_LITERAL,
