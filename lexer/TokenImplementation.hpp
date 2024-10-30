@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "TokenInterface.hpp"
 #include "TokenTypeEnum.hpp"
 
 using namespace std;

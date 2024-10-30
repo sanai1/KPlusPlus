@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     LexerImplementation lexer = LexerImplementation();
-    vector<TokenImplementation> tokens = lexer.tokenize("int x = number; double y = 10;");
+    vector<TokenImplementation> tokens = lexer.tokenize("int x = number; double y = 10;"); // TODO: сделать чтение одной строкой из файла с кодом
 
     for (auto & token : tokens) {
         cout << "TokenType -> " << static_cast<int>(token.getToken()) << endl;
