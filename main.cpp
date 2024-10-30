@@ -1,27 +1,20 @@
 #pragma once
 
 #include <iostream>
-#include <fstream>
-
-#include "Bor.hpp"
+#include "lexer/LexerImplementation.hpp"
 
 using namespace std;
 
-const string fileName = "ServiceWords.txt";
-Bor bor = Bor();
-
 int main() {
-    string word;
-    ifstream in(fileName);
-    if (in.is_open()) {
-        while (getline(in, word)) {
-            bor.add(word);
-            cout << bor.find(word);
-        }
+    LexerImplementation lexer = LexerImplementation();
+    vector<TokenImplementation> tokens = lexer.tokenize("int x = number; double y = 10;");
+
+    for (auto & token : tokens) {
+        cout << "TokenType -> " << static_cast<int>(token.getToken()) << endl;
+        cout << "value -> " << token.getValue() << endl;
+        cout << "numberString -> " << token.getNumberString() << endl;
+        cout << endl;
     }
-    in.close();
-
-
 
     return 0;
 }
