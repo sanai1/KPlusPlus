@@ -46,6 +46,11 @@ enum class TokenTypeEnum {
     STRING_LITERAL,
 
 
+    // встроенные функции
+    PRINT,
+    PRINTLN,
+    INPUT,
+
     OTHER,
     END
 };

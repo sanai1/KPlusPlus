@@ -14,6 +14,7 @@ false
 final
 float
 for
+fun
 if
 int
 long
@@ -21,7 +22,6 @@ not
 null
 nullptr
 return
-short
 when
 throw
 true

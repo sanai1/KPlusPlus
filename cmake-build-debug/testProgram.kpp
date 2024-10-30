@@ -1,0 +1,8 @@
+
+int x = 10;
+
+fun test(int a) {
+    return a*x;
+}
+
+println(test(5));

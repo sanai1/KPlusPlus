@@ -27,10 +27,10 @@ public:
                 tokens.emplace_back(getTokenImplementation());
             } else if ('0' <= current_ and current_ <= '9') {
                 tokens.emplace_back(TokenTypeEnum::NUMBER_LITERAL, getNumber(), numberString_);
-            } else if ('"' == current_ or current_ <= '\'') {
+            } else if (current_ == '"' or to_string(current_) == "'") {
                 tokens.emplace_back(TokenTypeEnum::STRING_LITERAL, getString(current_), numberString_);
             } else if (current_ == '+') {
-                tokens.emplace_back(getPlus());
+                    tokens.emplace_back(getPlus());
             }  else if (current_ == '-') {
                 tokens.emplace_back(getMinus());
             } else if (current_ == '*') {
@@ -68,12 +68,15 @@ public:
             } else if (current_ == ',') {
                 tokens.emplace_back(TokenTypeEnum::COMMA, ",", numberString_);
                 advance();
+            } else if (current_ == '\n') {
+                numberString_ ++;
+                advance();
             } else {
                 tokens.emplace_back(TokenTypeEnum::OTHER, to_string(current_), numberString_);
                 advance();
             }
         }
-//        tokens.emplace_back(TokenTypeEnum::END, current_, numberString_);
+        tokens.emplace_back(TokenTypeEnum::END, to_string(current_), numberString_);
         return tokens;
     }
 
@@ -81,7 +84,7 @@ private:
     string input_;
     int position_;
     char current_;
-    int numberString_ = 0;
+    int numberString_ = 1;
 
     void advance() {
         position_ ++;
@@ -108,6 +111,9 @@ private:
         if (bor.find(result)) {
             return {TokenTypeEnum::SERVICE_WORD, result, numberString_};
         }
+        if (result == "println") return {TokenTypeEnum::PRINTLN, result, numberString_};
+        if (result == "print") return {TokenTypeEnum::PRINT, result, numberString_};
+        if (result ==  "input") return {TokenTypeEnum::INPUT, result, numberString_};
         return {TokenTypeEnum::ID, result, numberString_};
     }
 
@@ -203,7 +209,9 @@ private:
 
     string getNumber() {
         string result;
-        while (current_ != NULL and '0' <= current_ and current_ <= '9') {
+        bool fl = false;
+        while ((current_ != NULL and '0' <= current_ and current_ <= '9') or (current_ == '.' and !fl)){
+            if (current_ == '.') fl = true;
             result += current_;
             advance();
         }

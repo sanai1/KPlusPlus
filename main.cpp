@@ -1,13 +1,25 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "lexer/LexerImplementation.hpp"
 
 using namespace std;
 
+const string fileProgramText = "testProgram.kpp";
+
+string readProgram() {
+    ifstream file(fileProgramText);
+    stringstream ss;
+    ss << file.rdbuf();
+    return ss.str();
+}
+
 int main() {
     LexerImplementation lexer = LexerImplementation();
-    vector<TokenImplementation> tokens = lexer.tokenize("int x = number; double y = 10;"); // TODO: сделать чтение одной строкой из файла с кодом
+    string textProgram = readProgram();
+    vector<TokenImplementation> tokens = lexer.tokenize(textProgram);
 
     for (auto & token : tokens) {
         cout << "TokenType -> " << static_cast<int>(token.getToken()) << endl;
