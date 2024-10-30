@@ -49,11 +49,11 @@ cmake_ninja_workdir = /home/aleksandr/CLionProjects/K++/cmake-build-debug/
 
 build cmake_object_order_depends_target_K__: phony || CMakeFiles/K__.dir
 
-build CMakeFiles/K__.dir/main.cpp.o: CXX_COMPILER__K___unscanned_Debug /home/aleksandr/CLionProjects/K++/main.cpp || cmake_object_order_depends_target_K__
-  DEP_FILE = CMakeFiles/K__.dir/main.cpp.o.d
+build CMakeFiles/K__.dir/starter/main.cpp.o: CXX_COMPILER__K___unscanned_Debug /home/aleksandr/CLionProjects/K++/starter/main.cpp || cmake_object_order_depends_target_K__
+  DEP_FILE = CMakeFiles/K__.dir/starter/main.cpp.o.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/K__.dir
-  OBJECT_FILE_DIR = CMakeFiles/K__.dir
+  OBJECT_FILE_DIR = CMakeFiles/K__.dir/starter
 
 
 # =============================================================================
@@ -63,7 +63,7 @@ build CMakeFiles/K__.dir/main.cpp.o: CXX_COMPILER__K___unscanned_Debug /home/ale
 #############################################
 # Link the executable K__
 
-build K__: CXX_EXECUTABLE_LINKER__K___Debug CMakeFiles/K__.dir/main.cpp.o
+build K__: CXX_EXECUTABLE_LINKER__K___Debug CMakeFiles/K__.dir/starter/main.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/K__.dir
   POST_BUILD = :

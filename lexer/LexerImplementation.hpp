@@ -1,13 +1,10 @@
-#pragma once
-
-#include <utility>
 #include <vector>
 #include <fstream>
-#include "TokenImplementation.hpp"
-#include "Bor.hpp"
 
-const string fileName = "ServiceWords.txt";
-Bor bor = Bor();
+#include "TokenImplementation.hpp"
+#include "../starter/Starter.hpp"
+
+#pragma once
 
 class LexerImplementation {
 public:
@@ -18,7 +15,6 @@ public:
         this->current_ = input_[0];
 
         vector<TokenImplementation> tokens;
-        completionBor();
 
         while (current_ != NULL) {
             if (current_ == ' ') {
@@ -74,11 +70,10 @@ public:
             } else if (current_ == ',') {
                 tokens.emplace_back(TokenTypeEnum::COMMA, ",", numberString_);
                 advance();
-            }
-//            else if (current_ == '.') {
-//              tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
-//              advance(); }
-            else if (current_ == '\n') {
+            } else if (current_ == '.') {
+              tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
+              advance();
+            } else if (current_ == '\n') {
                 numberString_ ++;
                 advance();
             } else {
@@ -119,7 +114,7 @@ private:
             result += current_;
             advance();
         }
-        if (bor.find(result)) {
+        if (Starter::getInstance().getBor().find(result)) {
             return {TokenTypeEnum::SERVICE_WORD, result, numberString_};
         }
         if (result == "println") return {TokenTypeEnum::PRINTLN, result, numberString_};
@@ -274,17 +269,6 @@ private:
         }
         if (current_ == type) advance();
         return result;
-    }
-
-    static void completionBor() {
-        string word;
-        ifstream in(fileName);
-        if (in.is_open()) {
-            while (getline(in, word)) {
-                bor.add(word);
-            }
-        }
-        in.close();
     }
 
 };

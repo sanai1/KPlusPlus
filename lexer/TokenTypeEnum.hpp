@@ -48,7 +48,7 @@ enum class TokenTypeEnum {
     SEMICOLON, // точка с запятой
     COLON, // двоеточие
     COMMA, // запятая
-//    POINT, // точка
+    POINT, // точка
 
     // литералы
     NUMBER_LITERAL,

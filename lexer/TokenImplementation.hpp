@@ -1,7 +1,8 @@
-#pragma once
-
 #include <iostream>
+
 #include "TokenTypeEnum.hpp"
+
+#pragma once
 
 using namespace std;
 
@@ -10,7 +11,7 @@ public:
 
     TokenImplementation(TokenTypeEnum typeEnum, string value, int numberString) :
         type_(typeEnum),
-        value_(value),
+        value_(std::move(value)),
         numberString_(numberString) {}
 
     TokenTypeEnum getToken() {
