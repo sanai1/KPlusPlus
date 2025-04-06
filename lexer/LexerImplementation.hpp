@@ -26,8 +26,8 @@ public:
             } else if (current_ == '"' or to_string(current_) == "'") {
                 tokens.emplace_back(TokenTypeEnum::STRING_LITERAL, getString(current_), numberString_);
             } else if (current_ == '+') {
-                    tokens.emplace_back(getPlus());
-            }  else if (current_ == '-') {
+                tokens.emplace_back(getPlus());
+            } else if (current_ == '-') {
                 tokens.emplace_back(getMinus());
             } else if (current_ == '*') {
                 tokens.emplace_back(getMultiply());
@@ -71,10 +71,10 @@ public:
                 tokens.emplace_back(TokenTypeEnum::COMMA, ",", numberString_);
                 advance();
             } else if (current_ == '.') {
-              tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
-              advance();
+                tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
+                advance();
             } else if (current_ == '\n') {
-                numberString_ ++;
+                numberString_++;
                 advance();
             } else {
                 string str(1, current_);
@@ -93,7 +93,7 @@ private:
     int numberString_ = 1;
 
     void advance() {
-        position_ ++;
+        position_++;
         if (position_ > input_.size()) {
             current_ = NULL;
         } else {
@@ -119,7 +119,7 @@ private:
         }
         if (result == "println") return {TokenTypeEnum::PRINTLN, result, numberString_};
         if (result == "print") return {TokenTypeEnum::PRINT, result, numberString_};
-        if (result ==  "input") return {TokenTypeEnum::INPUT, result, numberString_};
+        if (result == "input") return {TokenTypeEnum::INPUT, result, numberString_};
         return {TokenTypeEnum::ID, result, numberString_};
     }
 
@@ -252,7 +252,7 @@ private:
     string getNumber() {
         string result;
         bool fl = false;
-        while ((current_ != NULL and '0' <= current_ and current_ <= '9') or (current_ == '.' and !fl)){
+        while ((current_ != NULL and '0' <= current_ and current_ <= '9') or (current_ == '.' and !fl)) {
             if (current_ == '.') fl = true;
             result += current_;
             advance();

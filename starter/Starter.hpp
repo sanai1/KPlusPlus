@@ -10,7 +10,7 @@ using namespace std;
 
 class Starter { // Singleton
 public:
-    static Starter& getInstance() {
+    static Starter &getInstance() {
         if (!INSTANCE) {
             INSTANCE = new Starter();
         }
@@ -25,15 +25,16 @@ public:
         return inputTextProgram_;
     }
 
-    Starter(const Starter&) = delete;
-    Starter& operator=(const Starter&) = delete;
+    Starter(const Starter &) = delete;
+
+    Starter &operator=(const Starter &) = delete;
 
 private:
     Bor bor_;
     string inputTextProgram_;
     string fileProgramText_;
     string fileName_;
-    static Starter* INSTANCE;
+    static Starter *INSTANCE;
 
     void readProgram() {
         ifstream file(fileProgramText_);
