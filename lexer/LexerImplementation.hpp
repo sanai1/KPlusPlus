@@ -1,5 +1,6 @@
 #include <vector>
 #include <fstream>
+#include <map>
 
 #include "TokenImplementation.hpp"
 #include "../starter/Starter.hpp"
@@ -22,56 +23,18 @@ public:
             } else if ('a' <= current_ and current_ <= 'z') {
                 tokens.emplace_back(getTokenImplementation());
             } else if ('0' <= current_ and current_ <= '9') {
-                tokens.emplace_back(TokenTypeEnum::NUMBER_LITERAL, getNumber(), numberString_);
+                tokens.emplace_back(TokenTypeEnum::LITERAL, getNumber(), numberString_);
             } else if (current_ == '"' or to_string(current_) == "'") {
-                tokens.emplace_back(TokenTypeEnum::STRING_LITERAL, getString(current_), numberString_);
-            } else if (current_ == '+') {
-                tokens.emplace_back(getPlus());
-            } else if (current_ == '-') {
-                tokens.emplace_back(getMinus());
-            } else if (current_ == '*') {
-                tokens.emplace_back(getMultiply());
-            } else if (current_ == '/') {
-                tokens.emplace_back(getDivision());
-            } else if (current_ == '%') {
-                tokens.emplace_back(getPercent());
-            } else if (current_ == '>') {
-                tokens.emplace_back(getMore());
-            } else if (current_ == '<') {
-                tokens.emplace_back(getLess());
-            } else if (current_ == '!') {
-                tokens.emplace_back(getExclamationMark());
-            } else if (current_ == '=') {
-                tokens.emplace_back(getAssign());
-            } else if (current_ == '(') {
-                tokens.emplace_back(TokenTypeEnum::LPAREN, "(", numberString_);
+                tokens.emplace_back(TokenTypeEnum::LITERAL, getString(current_), numberString_);
+            } else if (current_ == '+' or current_ == '-' or current_ == '*' or current_ == '/' or current_ == '%') {
+                tokens.emplace_back(getArithmetics());
+            } else if (current_ == '>' or current_ == '<' or current_ == '!' or current_ == '=') {
+                tokens.emplace_back(getComparison());
+            } else if (current_ == '(' or current_ == ')' or current_ == '[' or current_ == ']' or current_ == '{' or current_ == '}') {
+                tokens.emplace_back(TokenTypeEnum::BRACKET, to_string(current_), numberString_);
                 advance();
-            } else if (current_ == ')') {
-                tokens.emplace_back(TokenTypeEnum::RPAREN, ")", numberString_);
-                advance();
-            } else if (current_ == '[') {
-                tokens.emplace_back(TokenTypeEnum::LSQUAREBRACKET, "[", numberString_);
-                advance();
-            } else if (current_ == ']') {
-                tokens.emplace_back(TokenTypeEnum::RSQUAREBRACKET, "]", numberString_);
-                advance();
-            } else if (current_ == '{') {
-                tokens.emplace_back(TokenTypeEnum::LCURLYBRACE, "{", numberString_);
-                advance();
-            } else if (current_ == '}') {
-                tokens.emplace_back(TokenTypeEnum::RCURLYBRACE, "}", numberString_);
-                advance();
-            } else if (current_ == ';') {
-                tokens.emplace_back(TokenTypeEnum::SEMICOLON, ";", numberString_);
-                advance();
-            } else if (current_ == ':') {
-                tokens.emplace_back(TokenTypeEnum::COLON, ":", numberString_);
-                advance();
-            } else if (current_ == ',') {
-                tokens.emplace_back(TokenTypeEnum::COMMA, ",", numberString_);
-                advance();
-            } else if (current_ == '.') {
-                tokens.emplace_back(TokenTypeEnum::POINT, ".", numberString_);
+            } else if (current_ == ';' or current_ == ':' or current_ == ',' or current_ == '.') {
+                tokens.emplace_back(TokenTypeEnum::PUNCTUATION, to_string(current_), numberString_);
                 advance();
             } else if (current_ == '\n') {
                 numberString_++;
@@ -117,136 +80,43 @@ private:
         if (Starter::getInstance().getBor().find(result)) {
             return {TokenTypeEnum::SERVICE_WORD, result, numberString_};
         }
-        if (result == "println") return {TokenTypeEnum::PRINTLN, result, numberString_};
-        if (result == "print") return {TokenTypeEnum::PRINT, result, numberString_};
-        if (result == "input") return {TokenTypeEnum::INPUT, result, numberString_};
         return {TokenTypeEnum::ID, result, numberString_};
     }
 
-    TokenImplementation getPlus() {
+    TokenImplementation getArithmetics() {
         string result;
         result += current_;
         advance();
-        if (current_ != NULL) {
-            if (current_ == '+') {
+        return {TokenTypeEnum::OPERATION, result, numberString_};
+    }
+
+    TokenImplementation getComparison() {
+        string result;
+        result += current_;
+        advance();
+        if (result == "=") {
+            if (current_ == '=') {
                 result += current_;
                 advance();
-                return {TokenTypeEnum::PLUSPLUS, result, numberString_};
-            } else if (current_ == '=') {
+                return {TokenTypeEnum::COMPARISON, result, numberString_};
+            } else {
+                return {TokenTypeEnum::ASSIGMENT, result, numberString_};
+            }
+        } else if (result == "<" or result == ">") {
+            if (current_ == '=') {
                 result += current_;
                 advance();
-                return {TokenTypeEnum::PLUSASSIGN, result, numberString_};
+            }
+            return {TokenTypeEnum::COMPARISON, result, numberString_};
+        } else {
+            if (current_ == '=') {
+                result += current_;
+                advance();
+                return {TokenTypeEnum::COMPARISON, result, numberString_};
+            } else {
+                return {TokenTypeEnum::DENIAL, result, numberString_};
             }
         }
-        return {TokenTypeEnum::PLUS, result, numberString_};
-    }
-
-    TokenImplementation getMinus() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ != NULL) {
-            if (current_ == '-') {
-                result += current_;
-                advance();
-                return {TokenTypeEnum::MINUSMINUS, result, numberString_};
-            } else if (current_ == '=') {
-                result += current_;
-                advance();
-                return {TokenTypeEnum::MINUSASSIGN, result, numberString_};
-            }
-        }
-        return {TokenTypeEnum::MINUS, result, numberString_};
-    }
-
-    TokenImplementation getMultiply() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ != NULL) {
-            if (current_ == '*') {
-                result += current_;
-                advance();
-                return {TokenTypeEnum::MULTIPLYMULTIPLY, result, numberString_};
-            } else if (current_ == '=') {
-                result += current_;
-                advance();
-                return {TokenTypeEnum::MULTIPLYASSIGN, result, numberString_};
-            }
-        }
-        return {TokenTypeEnum::MULTIPLY, result, numberString_};
-    }
-
-    TokenImplementation getDivision() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::DIVISIONASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::DIVISION, result, numberString_};
-    }
-
-    TokenImplementation getPercent() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::PERCENTASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::PERCENT, result, numberString_};
-    }
-
-    TokenImplementation getAssign() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::ASSIGNASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::ASSIGN, result, numberString_};
-    }
-
-    TokenImplementation getMore() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::MOREASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::MORE, result, numberString_};
-    }
-
-    TokenImplementation getLess() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::LESSASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::LESS, result, numberString_};
-    }
-
-    TokenImplementation getExclamationMark() {
-        string result;
-        result += current_;
-        advance();
-        if (current_ == '=') {
-            result += current_;
-            advance();
-            return {TokenTypeEnum::EXCLAMATIONMARKASSIGN, result, numberString_};
-        }
-        return {TokenTypeEnum::EXCLAMATIONMARK, result, numberString_};
     }
 
     string getNumber() {

@@ -1,65 +1,36 @@
 #pragma once
 
 enum class TokenTypeEnum {
+    // ключевые слова
     SERVICE_WORD,
+
+    // идентификаторы
     ID,
 
-    // операция
-    PLUS,
-    PLUSPLUS,
+    // строки, числа
+    LITERAL,
 
-    MINUS,
-    MINUSMINUS,
+    // плюс, минус, умножить, разделить, остаток от деления
+    OPERATION,
 
-    MULTIPLY,
-    MULTIPLYMULTIPLY,
+    // больше [или равно], меньше [или равно], не равно, равно
+    COMPARISON,
 
-    DIVISION,
+    // присваивание
+    ASSIGMENT,
 
-    PERCENT,
+    // отрицание
+    DENIAL,
 
-    ASSIGN,
-    PLUSASSIGN,
-    MINUSASSIGN,
-    MULTIPLYASSIGN,
-    DIVISIONASSIGN,
-    ASSIGNASSIGN,
-    PERCENTASSIGN,
+    // круглые / квадратные / фигурные скобки
+    BRACKET,
 
-    // сравнения
-    MORE,
-    MOREASSIGN,
-    LESS,
-    LESSASSIGN,
-    EXCLAMATIONMARK,
-    EXCLAMATIONMARKASSIGN,
+    // точки, точки с запятой, двоеточие, запятая
+    PUNCTUATION,
 
-    // скобки
-    LPAREN, // круглые
-    RPAREN,
-
-    LSQUAREBRACKET, // квадратные
-    RSQUAREBRACKET,
-
-    LCURLYBRACE, // фигурные
-    RCURLYBRACE,
-
-
-    SEMICOLON, // точка с запятой
-    COLON, // двоеточие
-    COMMA, // запятая
-    POINT, // точка
-
-    // литералы
-    NUMBER_LITERAL,
-    STRING_LITERAL,
-
-
-    // встроенные функции
-    PRINT,
-    PRINTLN,
-    INPUT,
-
+    // любые символы не подходящие под определение ранее описанных лексемм
     OTHER,
+
+    // конец программы
     END
 };
